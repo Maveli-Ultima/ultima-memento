@@ -30,7 +30,7 @@ namespace Server.Spells.DeathKnight
 			else if ( spell == 754 ){ 	skl = "5";	txt += "Your hand holds the powers of a hag, where it can remove curses from items and others."; }
 			else if ( spell == 755 ){ 	skl = "70";	txt += "The death knights's enemy is scorched by a hellfire that continues to burn the enemy for a short duration."; }
 			else if ( spell == 756 ){ 	skl = "25";	txt += "Calls down a bolt of energy from Lucifer himself, and temporarily stuns the enemy."; }
-			else if ( spell == 757 ){ 	skl = "80";	txt += "The forces of Orcus surround the knight and refelecta a certain amount of magical effects back at the caster."; }
+			else if ( spell == 757 ){ 	skl = "80";	txt += "The forces of Orcus surround the knight and reflects a certain amount of magical effects back at the caster."; }
 			else if ( spell == 758 ){ 	skl = "60";	txt += "Channels hatred to form a barrier around the target, shielding them from physical harm."; }
 			else if ( spell == 759 ){ 	skl = "45";	txt += "Drains the enemy of their soul, reducing their mana for a short period of time."; }
 			else if ( spell == 760 ){ 	skl = "20";	txt += "Greatly increases the target's strength for a short period."; }

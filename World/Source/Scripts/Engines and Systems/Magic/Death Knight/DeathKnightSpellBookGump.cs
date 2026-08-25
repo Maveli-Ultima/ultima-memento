@@ -238,7 +238,7 @@ namespace Server.Gumps
 					skil2 = "80";
 					mana2 = "56";
 					text2 = ""; if ( !this.HasSpell( from, 757) ){ m_NotHave_2 = true; z2=220; text2 = "Sir Oslan Knarren<BR>Land of Lodoria: Dungeon Despise<BR>" + sGrave + "<BR><BR>"; }
-					text2 = text2 + "The forces of Orcus surround the knight and refelecta a certain amount of magical effects back at the caster.";
+					text2 = text2 + "The forces of Orcus surround the knight and reflects a certain amount of magical effects back at the caster.";
 					icon2 = 0x1B;
 				}
 				else if ( page == 6 )
