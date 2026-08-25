@@ -99,63 +99,19 @@ namespace Server.Mobiles
 
 		public override bool OnDragDrop( Mobile from, Item dropped )
 		{
-			int hasSymbol = 0;
-			int hasBook = 0;
-			int isPriest = 0;
-
 			if ( dropped is MalletStake )
 			{
 				MalletStake stake = (MalletStake)dropped;
-
 				int reward = stake.VampiresSlain;
-
 				if ( reward > 0 )
 				{
 					from.AddToBackpack( new Gold( reward ) );
+					from.AddToBackpack ( new HolyManSpellbook() );
 
-					string sMessage = "Thank you. Here is " + reward + " gold for your bravery.";
+					var sMessage = from.Name + ", take the gold and this as well. You may be a good priest one day.";
+					PrivateOverheadMessage(MessageType.Regular, 1153, false, sMessage, from.NetState);
+					from.PlaySound( 0x1EA );
 
-					if ( reward >= 1000 && from.Karma >= 2500 && from.Skills[SkillName.Spiritualism].Base > 0 && from.Skills[SkillName.Healing].Base > 0 )
-					{
-						foreach ( Item item in World.Items.Values )
-						{
-							if ( item is HolySymbol )
-							{
-								HolySymbol symbol = (HolySymbol)item;
-								if ( symbol.owner == from )
-								{
-									from.AddToBackpack( symbol );
-									hasSymbol = 1;
-								}
-							}
-							else if ( item is HolyManSpellbook )
-							{
-								HolyManSpellbook book = (HolyManSpellbook)item;
-								if ( book.owner == from )
-								{
-									from.AddToBackpack( book );
-									hasBook = 1;
-								}
-							}
-						}
-
-						if ( hasSymbol == 0 ){ from.AddToBackpack ( new HolySymbol( from ) ); }
-						if ( hasBook == 0 ){ HolyManSpellbook tome = new HolyManSpellbook( (ulong)0, from ); from.AddToBackpack ( tome ); }
-
-						from.SendMessage( "You have been given your holy symbol and prayer book." );
-
-						if ( hasSymbol + hasBook == 0 )
-						{
-							isPriest = 1;
-							LoggingFunctions.LogGenericQuest( from, "has become a priest" );
-							from.FixedParticles( 0x373A, 10, 15, 5018, EffectLayer.Waist );
-							from.PlaySound( 0x1EA );
-							sMessage = from.Name + ", take the gold and these as well. You may be a good priest one day.";
-						}
-					}
-
-					this.PrivateOverheadMessage(MessageType.Regular, 1153, false, sMessage, from.NetState);
-					if ( isPriest == 0 ){ from.SendSound( 0x3D ); }
 					dropped.Delete();
 					return true;
 				}

@@ -1239,6 +1239,8 @@ namespace Server.Misc
 				default:
 					builder.Append(Version());
 					builder.Append("<br>Changes<br>");
+					builder.Append("- Item - Prayer book is now always given when you turn in a wooden mallet and stake<br>");
+					builder.Append("- Item - Prayer book attempts to bind to you when you open it<br>");
 
 					builder.Append("<br>Fixes<br>");
 					builder.Append("- Misc - Fix issue where Strange Portals crossed facets<br>");
