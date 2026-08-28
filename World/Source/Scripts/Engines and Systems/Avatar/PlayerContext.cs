@@ -1,6 +1,7 @@
 using Server.Items;
 using Server.Misc;
 using Server.Mobiles;
+using Server.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -444,7 +445,7 @@ namespace Server.Engines.Avatar
 							player.Skills[SkillName.Psychology].Base = player.Avatar.Skills[SkillName.Psychology];
 						}
 
-						player.AddItem(new BagOfTricks());
+						player.AddToBackpack(new BagOfTricks());
 						break;
 					}
 
@@ -456,7 +457,7 @@ namespace Server.Engines.Avatar
 							player.Skills[SkillName.Meditation].Base = player.Avatar.Skills[SkillName.Meditation];
 						}
 
-						player.AddItem(new MysticSpellbook { Owner = player });
+						player.AddToBackpack(new MysticSpellbook { Owner = player });
 						break;
 					}
 
@@ -467,7 +468,7 @@ namespace Server.Engines.Avatar
 							player.Skills[SkillName.Ninjitsu].Base = player.Avatar.Skills[SkillName.Ninjitsu];
 						}
 
-						player.AddItem(new ShinobiScroll { Owner = player });
+						player.AddToBackpack(new ShinobiScroll { Owner = player });
 						break;
 					}
 
@@ -479,7 +480,7 @@ namespace Server.Engines.Avatar
 						}
 
 						player.Karma = -5000;
-						player.AddItem(new DeathKnightSpellbook { Owner = player });
+						player.AddToBackpack(new DeathKnightSpellbook { Owner = player });
 						break;
 					}
 
@@ -491,7 +492,15 @@ namespace Server.Engines.Avatar
 							player.Skills[SkillName.Spiritualism].Base = player.Avatar.Skills[SkillName.Spiritualism];
 						}
 
-						player.AddItem(new HolyManSpellbook { Owner = player });
+						var spellbook = WorldUtilities.FirstOrDefault<HolyManSpellbook>(item => item.owner == player);
+						if (spellbook != null) spellbook.Delete();
+
+						var symbol = WorldUtilities.FirstOrDefault<HolySymbol>(item => item.owner == player);
+						if (symbol != null) symbol.Delete();
+
+						player.Karma = 2500;
+						player.AddToBackpack(new HolyManSpellbook { Owner = player });
+						player.AddToBackpack(new HolySymbol { Owner = player });
 						break;
 					}
 
