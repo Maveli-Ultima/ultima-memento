@@ -14,6 +14,15 @@ namespace Server.Engines.Avatar
 			CommandSystem.Register("avatar-enable", AccessLevel.Player, new CommandEventHandler(EnableAvatarCommand));
 			CommandSystem.Register("avatar-shop", AccessLevel.Player, new CommandEventHandler(OpenAvatarShopCommand));
 			CommandSystem.Register("avatar-migrate--game-time", AccessLevel.Administrator, new CommandEventHandler(OnMigrateGameTime));
+
+			CommandSystem.Register("avatar-draft-enable", AccessLevel.Player, args =>
+			{
+				var from = (PlayerMobile)args.Mobile;
+				if (!from.Avatar.Active) return;
+				if (from.Avatar.DraftModeEnabled) return;
+
+				from.Avatar.SetDraftModeEnabled(from, true);
+			});
 		}
 
 		[Usage("avatar-enable")]
