@@ -3,6 +3,7 @@ using Server.Misc;
 using Server.Mobiles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.Engines.Avatar
 {
@@ -116,6 +117,20 @@ namespace Server.Engines.Avatar
 				if (UnlockTemplateDeathKnight) PointsSaved += 40 * RewardFactory.ONE_THOUSAND_GOLD;
 				if (UnlockTemplateHolyMan) PointsSaved += 40 * RewardFactory.ONE_THOUSAND_GOLD;
 			}
+
+			if (13 < version)
+			{
+				_draftModeEnabled = reader.ReadBool();
+				if (_draftModeEnabled)
+				{
+					var count = reader.ReadInt();
+					_draftedSkills = new HashSet<SkillName>(count);
+					for (int i = 0; i < count; i++)
+					{
+						_draftedSkills.Add((SkillName)reader.ReadInt());
+					}
+				}
+			}
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -190,6 +205,18 @@ namespace Server.Engines.Avatar
 		public bool UnlockFugitiveMode { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
+		public bool UnlockFullSkillArchive
+		{
+			get { return _unlockFullSkillArchive; }
+			set
+			{
+				_unlockFullSkillArchive = value;
+				ClearRewardCache(Categories.PrimaryBoosts);
+				ClearRewardCache(Categories.SecondaryBoosts);
+			}
+		}
+
+		[CommandProperty(AccessLevel.GameMaster)]
 		public bool UnlockMonsterRaces { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -203,21 +230,6 @@ namespace Server.Engines.Avatar
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool UnlockRecordSkillCaps { get; set; }
-
-		[CommandProperty(AccessLevel.GameMaster)]
-		/// <summary>
-		/// This is an admin-only setting
-		/// </summary>
-		public bool UnlockFullSkillArchive
-		{
-			get { return _unlockFullSkillArchive; }
-			set
-			{
-				_unlockFullSkillArchive = value;
-				ClearRewardCache(Categories.PrimaryBoosts);
-				ClearRewardCache(Categories.SecondaryBoosts);
-			}
-		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public bool UnlockSavageRace { get; set; }
@@ -245,7 +257,7 @@ namespace Server.Engines.Avatar
 
 		public void Serialize(GenericWriter writer)
 		{
-			writer.Write(13); // version
+			writer.Write(14); // version
 
 			writer.Write(PointsFarmed);
 			writer.Write(PointsSaved);
@@ -284,6 +296,16 @@ namespace Server.Engines.Avatar
 			writer.Write(UnlockTemplateDeathKnight);
 			writer.Write(UnlockTemplateHolyMan);
 			writer.Write(UnlockFullSkillArchive);
+
+			writer.Write(_draftModeEnabled);
+			if (_draftModeEnabled)
+			{
+				writer.Write(_draftedSkills.Count);
+				foreach (var skill in _draftedSkills)
+				{
+					writer.Write((int)skill);
+				}
+			}
 		}
 
 		public override string ToString()
@@ -416,39 +438,59 @@ namespace Server.Engines.Avatar
 			{
 				case AvatarStarterTemplates.Jester:
 					{
-						player.Skills[SkillName.Begging].Base = player.Avatar.Skills[SkillName.Begging];
-						player.Skills[SkillName.Psychology].Base = player.Avatar.Skills[SkillName.Psychology];
+						if (!DraftModeEnabled)
+						{
+							player.Skills[SkillName.Begging].Base = player.Avatar.Skills[SkillName.Begging];
+							player.Skills[SkillName.Psychology].Base = player.Avatar.Skills[SkillName.Psychology];
+						}
+
 						player.AddItem(new BagOfTricks());
 						break;
 					}
 
 				case AvatarStarterTemplates.Mystic:
 					{
-						player.Skills[SkillName.Focus].Base = player.Avatar.Skills[SkillName.Focus];
-						player.Skills[SkillName.Meditation].Base = player.Avatar.Skills[SkillName.Meditation];
+						if (!DraftModeEnabled)
+						{
+							player.Skills[SkillName.Focus].Base = player.Avatar.Skills[SkillName.Focus];
+							player.Skills[SkillName.Meditation].Base = player.Avatar.Skills[SkillName.Meditation];
+						}
+
 						player.AddItem(new MysticSpellbook { Owner = player });
 						break;
 					}
 
 				case AvatarStarterTemplates.Shinobi:
 					{
-						player.Skills[SkillName.Ninjitsu].Base = player.Avatar.Skills[SkillName.Ninjitsu];
+						if (!DraftModeEnabled)
+						{
+							player.Skills[SkillName.Ninjitsu].Base = player.Avatar.Skills[SkillName.Ninjitsu];
+						}
+
 						player.AddItem(new ShinobiScroll { Owner = player });
 						break;
 					}
 
 				case AvatarStarterTemplates.DeathKnight:
 					{
+						if (!DraftModeEnabled)
+						{
+							player.Skills[SkillName.Knightship].Base = player.Avatar.Skills[SkillName.Knightship];
+						}
+
 						player.Karma = -5000;
-						player.Skills[SkillName.Knightship].Base = player.Avatar.Skills[SkillName.Knightship];
 						player.AddItem(new DeathKnightSpellbook { Owner = player });
 						break;
 					}
 
 				case AvatarStarterTemplates.HolyMan:
 					{
-						player.Skills[SkillName.Healing].Base = player.Avatar.Skills[SkillName.Healing];
-						player.Skills[SkillName.Spiritualism].Base = player.Avatar.Skills[SkillName.Spiritualism];
+						if (!DraftModeEnabled)
+						{
+							player.Skills[SkillName.Healing].Base = player.Avatar.Skills[SkillName.Healing];
+							player.Skills[SkillName.Spiritualism].Base = player.Avatar.Skills[SkillName.Spiritualism];
+						}
+
 						player.AddItem(new HolyManSpellbook { Owner = player });
 						break;
 					}
@@ -469,6 +511,13 @@ namespace Server.Engines.Avatar
 						CharacterCreation.AddSkillBasedItems(player, skills);
 					}
 					break;
+			}
+
+			if (DraftModeEnabled)
+			{
+				// Draft players get items for every skill they drafted regardless of their current skill level
+				var skills = DraftedSkills.Select(skillName => new SkillNameValue(skillName, 1)).ToArray();
+				CharacterCreation.AddSkillBasedItems(player, skills);
 			}
 		}
 	}
