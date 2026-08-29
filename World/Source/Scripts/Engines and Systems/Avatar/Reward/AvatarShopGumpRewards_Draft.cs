@@ -92,7 +92,7 @@ namespace Server.Engines.Avatar
 				allSkills.Add(skillName);
 			}
 
-			var isInitialDraft = context.DraftPicksSpent <= Constants.DRAFT_START_PICK_AMOUNT;
+			var isInitialDraft = context.DraftPicksSpent < Constants.DRAFT_START_PICK_AMOUNT;
 			var skills = context.DraftPicksSpent <= Constants.DRAFT_START_PICK_AMOUNT
 				? allSkills.Where(skillName => context.IsSmartSkill(skillName))
 				: allSkills;
@@ -120,6 +120,8 @@ namespace Server.Engines.Avatar
 							context.AddDraftedSkill(skill.SkillName);
 							skill.SetLockNoRelay(SkillLock.Up);
 							from.Send(new SkillChange(skill));
+
+							if (!isInGypsyEncampment) return;
 
 							if (skill.IsSecondarySkill())
 							{
