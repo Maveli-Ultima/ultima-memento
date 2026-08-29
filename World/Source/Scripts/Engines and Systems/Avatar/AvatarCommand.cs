@@ -65,7 +65,7 @@ namespace Server.Engines.Avatar
 				return;
 			}
 
-			if (from.Avatar.Active)
+			if (from.Avatar.Active && from.AccessLevel <= AccessLevel.Player)
 			{
 				from.SendMessage("You already have the Avatar status enabled.");
 				return;
@@ -86,7 +86,7 @@ namespace Server.Engines.Avatar
 						AvatarEngine.InitializePlayer(newCharacter);
 						AvatarEngine.Instance.ApplyContext(newCharacter, newCharacter.Avatar);
 
-						from.Avatar.SetDraftModeEnabled(from, true);
+						newCharacter.Avatar.SetDraftModeEnabled(newCharacter, true);
 					});
 				}
 			);
