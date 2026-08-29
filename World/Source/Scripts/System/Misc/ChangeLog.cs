@@ -1249,7 +1249,9 @@ namespace Server.Misc
 					builder.Append("- Misc - All players in a party, not just the killer, now check for quest completion<br>");
 
 					builder.Append("<br>Fixes<br>");
+					builder.Append("- Avatar - Fix issue where new Templates weren't applying as expected<br>");
 					builder.Append("- Gump - Scribing spells that require arcane scrolls now indicate they need mana<br>");
+					builder.Append("- Gump - Fix issue where Avatar gump would incorrectly cache skill archive entries<br>");
 					builder.Append("- Item - House teleporters remain active after the marking character is deleted<br>");
 					builder.Append("- Misc - Fix crash from concurrent client disconnect on the network thread<br>");
 					builder.Append("- Misc - Fix issue where Strange Portals crossed facets<br>");

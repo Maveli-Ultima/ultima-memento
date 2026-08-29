@@ -50,7 +50,6 @@ namespace Server.Misc
 
 		private static Mobile m_Mobile;
 
-
 		public static bool CheckDupe(Mobile m, string name)
 		{
 			if (m == null || name == null || name.Length == 0)
@@ -163,6 +162,8 @@ namespace Server.Misc
 
 		public static void AddSkillBasedItems(Mobile m, SkillNameValue[] skills)
 		{
+			m_Mobile = m;
+
 			for (int i = 0; i < skills.Length; i++)
 			{
 				var skill = skills[i];
