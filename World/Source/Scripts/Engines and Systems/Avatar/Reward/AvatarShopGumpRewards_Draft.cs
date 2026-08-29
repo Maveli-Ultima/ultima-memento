@@ -165,7 +165,7 @@ namespace Server.Engines.Avatar
 					).WithPrereq(
 						context.DraftModeEnabled,
 						"Requires Draft Mode to be enabled."
-					)
+					).AllowSelectAnywhere()
 				);
 			}
 
