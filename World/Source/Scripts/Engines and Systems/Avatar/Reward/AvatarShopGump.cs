@@ -428,7 +428,11 @@ namespace Server.Engines.Avatar
 						var item = itemReward.OnSelect();
 						if (item != null)
 						{
-							player.SendMessage("You have purchased '{0}' for '{1:n0}' coins.", reward.Name, cost);
+							if (0 < cost)
+								player.SendMessage("You have purchased '{0}' for '{1:n0}' coins.", reward.Name, cost);
+							else
+								player.SendMessage("You have purchased '{0}'.", reward.Name);
+							
 							m_Context.PointsSaved -= cost;
 							player.AddToBackpack(item);
 						}
@@ -445,7 +449,11 @@ namespace Server.Engines.Avatar
 							}
 							else
 							{
-								player.SendMessage("You have purchased '{0}' for '{1:n0}' coins.", reward.Name, cost);
+								if (0 < cost)
+									player.SendMessage("You have purchased '{0}' for '{1:n0}' coins.", reward.Name, cost);
+								else
+									player.SendMessage("You have purchased '{0}'.", reward.Name);
+
 								m_Context.PointsSaved -= cost;
 								actionReward.OnSelect();
 								AvatarEngine.Instance.ApplyContext(player, player.Avatar);
