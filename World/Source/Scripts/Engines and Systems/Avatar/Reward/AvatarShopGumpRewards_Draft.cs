@@ -23,7 +23,7 @@ namespace Server.Engines.Avatar
 						"No Template Selected",
 						"You have not selected a template. Please select a template to continue.",
 						() => { }
-					)
+					).AsStatic()
 				};
 			}
 
@@ -47,7 +47,7 @@ namespace Server.Engines.Avatar
 								// from.Kill();
 								// from.Resurrect();
 							}
-						)
+						).AsStatic()
 					);
 					return noMorePicksReward;
 				}
@@ -61,7 +61,7 @@ namespace Server.Engines.Avatar
 						"No More Picks",
 						"You have reached the maximum level for Draft.",
 						() => { }
-					)
+					).AsStatic()
 					: ActionReward.Create(
 						false,
 						AvatarShopGump.COST_NO_BUY,
@@ -71,7 +71,7 @@ namespace Server.Engines.Avatar
 							context.DraftLevel + Constants.DRAFT_LEVELS_PER_PICK - (context.DraftLevel % Constants.DRAFT_LEVELS_PER_PICK)
 						),
 						() => { }
-					)
+					).AsStatic()
 				);
 
 				return noMorePicksReward;
@@ -79,7 +79,7 @@ namespace Server.Engines.Avatar
 
 			var rewards = new List<IReward>();
 			var allSkills = new List<SkillName>();
-			foreach(var skillInfo in SkillInfo.Table)
+			foreach (var skillInfo in SkillInfo.Table)
 			{
 				var skillName = (SkillName)skillInfo.SkillID;
 				if (skillName == SkillName.Mysticism) continue;
