@@ -2266,6 +2266,11 @@ namespace Server.Mobiles
 								var newPlayer = CharacterCreation.ResetCharacter( this, true, false );
 								AvatarEngine.InitializePlayer(newPlayer);
 								AvatarEngine.Instance.ApplyContext(newPlayer, newPlayer.Avatar);
+
+								if (newPlayer.Avatar.DraftModeEnabled)
+								{
+									newPlayer.Avatar.SetDraftModeEnabled(newPlayer, true);
+								}
 							}
 							else
 							{
