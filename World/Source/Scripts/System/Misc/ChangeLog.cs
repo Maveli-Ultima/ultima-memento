@@ -1248,7 +1248,9 @@ namespace Server.Misc
 					builder.Append("- Misc - Guildmasters now wear their guild rings on their paperdolls<br>");
 
 					builder.Append("<br>Fixes<br>");
+					builder.Append("- Avatar - Fix issue where new Templates weren't applying as expected<br>");
 					builder.Append("- Gump - Scribing spells that require arcane scrolls now indicate they need mana<br>");
+					builder.Append("- Gump - Fix issue where Avatar gump would incorrectly cache skill archive entries<br>");
 					builder.Append("- Misc - Fix issue where Strange Portals crossed facets<br>");
 					builder.Append("- Spell - Fix typo in Orb of Orcus spell description<br>");
 					break;

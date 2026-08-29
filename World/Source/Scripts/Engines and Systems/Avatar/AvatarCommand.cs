@@ -12,6 +12,7 @@ namespace Server.Engines.Avatar
 		public static void Initialize()
 		{
 			CommandSystem.Register("avatar-enable", AccessLevel.Player, new CommandEventHandler(EnableAvatarCommand));
+			CommandSystem.Register("avatar-draft-enable", AccessLevel.Player, new CommandEventHandler(EnableDraftCommand));
 			CommandSystem.Register("avatar-shop", AccessLevel.Player, new CommandEventHandler(OpenAvatarShopCommand));
 			CommandSystem.Register("avatar-migrate--game-time", AccessLevel.Administrator, new CommandEventHandler(OnMigrateGameTime));
 		}
@@ -47,6 +48,45 @@ namespace Server.Engines.Avatar
 						var newCharacter = CharacterCreation.ResetCharacter(from, false, false);
 						AvatarEngine.InitializePlayer(newCharacter);
 						AvatarEngine.Instance.ApplyContext(newCharacter, newCharacter.Avatar);
+					});
+				}
+			);
+			from.SendGump(confirmation);
+		}
+
+		[Usage("avatar-draft-enable")]
+		[Description("Enables the Avatar status and Draft mode for the Player.")]
+		public static void EnableDraftCommand(CommandEventArgs e)
+		{
+			var from = (PlayerMobile)e.Mobile;
+			if (!AvatarShopGump.InGypsyEncampment(from))
+			{
+				from.SendMessage("You must be in the Gypsy encampment to enable Draft mode.");
+				return;
+			}
+
+			if (from.Avatar.Active && from.AccessLevel <= AccessLevel.Player)
+			{
+				from.SendMessage("You already have the Avatar status enabled.");
+				return;
+			}
+
+			var confirmation = new ConfirmationGump(
+				from,
+				"Enable Avatar Draft Mode?",
+				"Are you sure you wish to enable the Avatar Draft mode? This will reset your character and allow you to use the Avatar Draft features.",
+				() =>
+				{
+					from.SendMessage("Your character will be recreated and you will be disconnected shortly...");
+
+					Timer.DelayCall(TimeSpan.FromSeconds(1), () =>
+					{
+						var _ = AvatarEngine.Instance.GetOrCreateContext(from);
+						var newCharacter = CharacterCreation.ResetCharacter(from, false, false);
+						AvatarEngine.InitializePlayer(newCharacter);
+						AvatarEngine.Instance.ApplyContext(newCharacter, newCharacter.Avatar);
+
+						newCharacter.Avatar.SetDraftModeEnabled(newCharacter, true);
 					});
 				}
 			);
