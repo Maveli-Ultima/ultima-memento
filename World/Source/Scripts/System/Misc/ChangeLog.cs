@@ -1251,9 +1251,11 @@ namespace Server.Misc
 
 					builder.Append("<br>Fixes<br>");
 					builder.Append("- Avatar - Fix issue where new Templates weren't applying as expected<br>");
+					builder.Append("- Combat - Fix issue where harpoons, wizard staves, and Kilrathi weapons ignored peacemaking and shadow strike revealing rules<br>");
 					builder.Append("- Gump - Scribing spells that require arcane scrolls now indicate they need mana<br>");
 					builder.Append("- Gump - Fix issue where Avatar gump would incorrectly cache skill archive entries<br>");
 					builder.Append("- Item - House teleporters remain active after the marking character is deleted<br>");
+					builder.Append("- Item - Fix inverted Lower Ammo Cost behavior on harpoons, wizard staves, and Kilrathi weapons<br>");
 					builder.Append("- Misc - Fix crash from concurrent client disconnect on the network thread<br>");
 					builder.Append("- Misc - Fix issue where Strange Portals crossed facets<br>");
 					builder.Append("- Misc - Players with '0' Karma may now access The Glade<br>");
