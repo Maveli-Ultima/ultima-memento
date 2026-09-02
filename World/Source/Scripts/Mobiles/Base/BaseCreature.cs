@@ -834,6 +834,9 @@ namespace Server.Mobiles
 
 		#region Breath ability, like dragon fire breath
 		private DateTime m_NextBreathTime;
+		private int m_BreathAttackForm;
+
+		public int BreathAttackForm{ get{ return m_BreathAttackForm; } }
 
 		// Must be overriden in subclass to enable
 		public virtual bool HasBreath{ get{ return false; } }
@@ -957,6 +960,8 @@ namespace Server.Mobiles
 
 		public void DoFinalBreathAttack( Mobile target, int form, bool cycle )
 		{
+			m_BreathAttackForm = form;
+
 			int physDamage = BreathPhysicalDamage;
 			int fireDamage = BreathFireDamage;
 			int coldDamage = BreathColdDamage;
