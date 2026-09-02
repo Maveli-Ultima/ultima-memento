@@ -202,7 +202,7 @@ namespace Server.Misc
 				CopyFile( rootOrigin, rootBackup, "Craft/Shoppes.bin" );
 
 				CopyFile( rootOrigin, rootBackup, "Player/Temptations.bin" );
-
+				CopyFile( rootOrigin, rootBackup, "Player/Avatar.bin" );
 			}
 
 			Server.Misc.Cleanup.RemoveScripts();
