@@ -33,7 +33,7 @@ namespace Server.Engines.Avatar
 						AvatarShopGump.COST_FREE,
 						AvatarShopGump.NO_ITEM_ID,
 						skill.Name,
-						string.Format("{0} skill. Your highest value was: {1:n1}", !skill.IsSecondarySkill() ? "Primary" : "Secondary", value),
+						value.ToString("n1"),
 						() =>
 						{
 							var gump = new ConfirmationGump(
