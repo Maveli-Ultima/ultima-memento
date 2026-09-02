@@ -132,6 +132,21 @@ namespace Server.Engines.Avatar
 					}
 				}
 			}
+
+			if (14 < version)
+			{
+				if (_draftModeEnabled)
+				{
+					var count = reader.ReadInt();
+					_draftBannedSkills = new HashSet<SkillName>(count);
+					for (int i = 0; i < count; i++)
+					{
+						_draftBannedSkills.Add((SkillName)reader.ReadInt());
+					}
+				}
+
+				PrestigeLevel = reader.ReadInt();
+			}
 		}
 
 		[CommandProperty(AccessLevel.GameMaster)]
@@ -174,6 +189,9 @@ namespace Server.Engines.Avatar
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int PointsSaved { get; set; }
+
+		[CommandProperty(AccessLevel.GameMaster)]
+		public int PrestigeLevel { get; set; }
 
 		[CommandProperty(AccessLevel.GameMaster)]
 		public int RecordedSkillCapLevel { get; set; }
@@ -258,7 +276,7 @@ namespace Server.Engines.Avatar
 
 		public void Serialize(GenericWriter writer)
 		{
-			writer.Write(14); // version
+			writer.Write(15); // version
 
 			writer.Write(PointsFarmed);
 			writer.Write(PointsSaved);
@@ -306,7 +324,15 @@ namespace Server.Engines.Avatar
 				{
 					writer.Write((int)skill);
 				}
+
+				writer.Write(_draftBannedSkills.Count);
+				foreach (var skill in _draftBannedSkills)
+				{
+					writer.Write((int)skill);
+				}
 			}
+
+			writer.Write(PrestigeLevel);
 		}
 
 		public override string ToString()
