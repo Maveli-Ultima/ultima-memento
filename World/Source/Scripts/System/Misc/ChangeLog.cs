@@ -1276,6 +1276,7 @@ namespace Server.Misc
 					builder.Append("- Misc - Players with '0' Karma may now access The Glade<br>");
 					builder.Append("- Misc - Fix issue where relic items could be duplicated<br>");
 					builder.Append("- Spell - Fix typo in Orb of Orcus spell description<br>");
+					builder.Append("- Spell - Fix potential crash when casting too fast<br>");
 					break;
 			}
 		}
