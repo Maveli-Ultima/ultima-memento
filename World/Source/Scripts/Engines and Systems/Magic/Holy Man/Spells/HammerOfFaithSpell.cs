@@ -1,27 +1,34 @@
 using System;
-using System.Collections;
-using Server.Targeting;
-using Server.Network;
-using Server.Mobiles;
 using Server.Items;
-using Server.Spells;
+using Server.Targeting;
 
 namespace Server.Spells.HolyMan
 {
 	public class HammerOfFaithSpell : HolyManSpell
 	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Hammer of Faith", "Malleo Fidei",
-				266,
-				9040
-			);
+		public static readonly SpellInfo SpellInfo = new SpellInfo(
+			new SpellDefinition
+			{
+				SpellID = 773,
+				IconGraphic = 0x968,
+				Name = "Hammer of Faith",
+				PowerWords = "Malleo Fidei",
+				Description = "Temporarily summons a hammer from the gods.",
+				ManaCost = 25,
+				TithingCost = 100,
+				MinSkill = 50,
+				TargetType = TargetFlags.Beneficial
+			},
+			266,
+			9040
+		);
 
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 3 ); } }
-		public override int RequiredTithing{ get{ return 100; } }
-		public override double RequiredSkill{ get{ return 50.0; } }
-		public override int RequiredMana{ get{ return 25; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
+		public override int RequiredMana{ get{ return SpellInfo.SpellDefinition.ManaCost; } }
 
-		public HammerOfFaithSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		public HammerOfFaithSpell( Mobile caster, Item scroll ) : base( caster, scroll, SpellInfo )
 		{
 		}
 

@@ -1,10 +1,6 @@
 using System;
-using Server;
-using Server.Spells;
 using Server.Network;
-using Server.Mobiles;
 using Server.Items;
-using System.Collections.Generic;
 using System.Collections;
 
 namespace Server.Spells.HolyMan
@@ -26,27 +22,12 @@ namespace Server.Spells.HolyMan
 		public static string SpellDescription( int spell )
 		{
 			string txt = "This symbol holds the knowledge of spiritual blessings: ";
-			string skl = "0";
+			var definition = HolyManSpellProvider.GetDefinition(spell);
+			if ( definition == null ) return txt; // Unknown spell
 
-			if ( spell == 770 ){ 		skl = "60";	txt += "Sends demons and the dead back to the realms of hell."; }
-			else if ( spell == 771 ){ 	skl = "70";	txt += "Absorbs mana from others and bestows it to the priest."; }
-			else if ( spell == 772 ){ 	skl = "90";	txt += "Temporarily imbues a weapon with holy powers."; }
-			else if ( spell == 773 ){ 	skl = "50";	txt += "Temporarily summons a hammer from the gods."; }
-			else if ( spell == 774 ){ 	skl = "10";	txt += "Destroys the darkness, allowing for one to see better."; }
-			else if ( spell == 775 ){ 	skl = "10";	txt += "The priest is able to help those that are starving or thirsty."; }
-			else if ( spell == 776 ){ 	skl = "40";	txt += "Removes curses and other ailing effects."; }
-			else if ( spell == 777 ){ 	skl = "80";	txt += "Brings one back to life, or summons an orb to resurrect the priest later on."; }
-			else if ( spell == 778 ){ 	skl = "20";	txt += "Surrounds one with a holy aura that heals wounds much quicker."; }
-			else if ( spell == 779 ){ 	skl = "30";	txt += "The gods grant the priest greater strength, speed, and intelligence."; }
-			else if ( spell == 780 ){ 	skl = "60";	txt += "Allows the priest to enter the realm of the dead, avoiding any harm."; }
-			else if ( spell == 781 ){ 	skl = "40";	txt += "Calls down a bolt from the heavens, doing double damage to demons and undead."; }
-			else if ( spell == 782 ){ 	skl = "20";	txt += "Restores health and stamina to the weary."; }
-			else if ( spell == 783 ){ 	skl = "30";	txt += "Engulfs the priest in holy flames, reflecting magic back at the caster."; }
+			txt += definition.Description;
 
-			if ( skl == "0" )
-				return txt;
-
-			return txt + " It requires a Priest to be at least a " + skl + " in Spiritualism.";
+			return txt + " It requires a Priest to be at least a " + definition.MinSkill + " in Spiritualism.";
 		}
 
 		public override bool CheckCast()

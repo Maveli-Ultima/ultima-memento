@@ -1,6 +1,7 @@
 using Server.Gumps;
 using Server.Utilities;
 using Server.Misc;
+using Server.Spells.HolyMan;
 
 namespace Server.Items
 {
@@ -15,8 +16,8 @@ namespace Server.Items
 		public Mobile Owner { get{ return owner; } set{ owner = value; InvalidateProperties(); } }
 
 		public override SpellbookType SpellbookType{ get{ return SpellbookType.HolyMan; } }
-		public override int BookOffset{ get{ return 770; } }
-		public override int BookCount{ get{ return 15; } }
+		public override int BookOffset{ get{ return HolyManSpellProvider.FirstSpellId; } }
+		public override int BookCount{ get{ return HolyManSpellProvider.SpellCount; } }
 
 		[Constructable]
 		public HolyManSpellbook() : this( 0, null )

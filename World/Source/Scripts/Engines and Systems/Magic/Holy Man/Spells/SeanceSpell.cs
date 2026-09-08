@@ -1,31 +1,40 @@
 using System;
 using System.Collections;
-using Server;
 using Server.Items;
-using Server.Gumps;
-using Server.Spells;
+using Server.Targeting;
 
 namespace Server.Spells.HolyMan
 {
 	public class SeanceSpell : HolyManSpell
 	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Seance", "Spiritus Mundi",
-				266,
-				9040
-			);
+		public static readonly SpellInfo SpellInfo = new SpellInfo(
+			new SpellDefinition
+			{
+				SpellID = 780,
+				IconGraphic = 0x96F,
+				Name = "Seance",
+				PowerWords = "Spiritus Mundi",
+				Description = "Allows the priest to enter the realm of the dead, avoiding any harm.",
+				ManaCost = 30,
+				TithingCost = 120,
+				MinSkill = 60,
+				TargetType = TargetFlags.None
+			},
+			266,
+			9040
+		);
 
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 3 ); } }
-		public override int RequiredTithing{ get{ return 120; } }
-		public override double RequiredSkill{ get{ return 60.0; } }
-		public override int RequiredMana{ get{ return 30; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
+		public override int RequiredMana{ get{ return SpellInfo.SpellDefinition.ManaCost; } }
 
         private int m_NewBody;
         private int m_OldBody;
         private int m_NewHue;
         private int m_OldHue;
 
-        public SeanceSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        public SeanceSpell(Mobile caster, Item scroll) : base(caster, scroll, SpellInfo)
         {
         }
 

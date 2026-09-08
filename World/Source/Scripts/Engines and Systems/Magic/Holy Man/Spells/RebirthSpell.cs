@@ -1,28 +1,36 @@
 using System;
 using Server.Targeting;
-using Server.Network;
 using Server.Gumps;
 using Server.Mobiles;
 using Server.Items;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Server.Spells.HolyMan
 {
 	public class RebirthSpell : HolyManSpell
 	{
-        private static SpellInfo m_Info = new SpellInfo(
-				"Rebirth", "Reditus Vitae",
-				266,
-				9040
-            );
+        public static readonly SpellInfo SpellInfo = new SpellInfo(
+            new SpellDefinition
+            {
+                SpellID = 777,
+                IconGraphic = 0x96C,
+                Name = "Rebirth",
+                PowerWords = "Reditus Vitae",
+				Description = "Brings one back to life, or summons an orb to resurrect the priest later on.",
+                ManaCost = 40,
+                TithingCost = 400,
+                MinSkill = 80,
+                TargetType = TargetFlags.Beneficial
+            },
+			266,
+			9040
+        );
  
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 3 ); } }
-		public override int RequiredTithing{ get{ return 400; } }
-		public override double RequiredSkill{ get{ return 80.0; } }
-		public override int RequiredMana{ get{ return 40; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
+		public override int RequiredMana{ get{ return SpellInfo.SpellDefinition.ManaCost; } }
  
-        public RebirthSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+        public RebirthSpell( Mobile caster, Item scroll ) : base( caster, scroll, SpellInfo )
         {
         }
  

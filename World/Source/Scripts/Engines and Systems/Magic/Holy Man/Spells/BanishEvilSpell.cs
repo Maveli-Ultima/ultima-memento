@@ -1,27 +1,35 @@
 using System;
-using System.Collections;
 using Server.Targeting;
-using Server.Network;
 using Server.Mobiles;
 using Server.Items;
-using Server.Spells;
 
 namespace Server.Spells.HolyMan
 {
 	public class BanishEvilSpell : HolyManSpell
 	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Banish", "Exilium",
-				266,
-				9040
-			);
+		public static readonly SpellInfo SpellInfo = new SpellInfo(
+			new SpellDefinition
+			{
+				SpellID = 770,
+				IconGraphic = 0x965,
+				Name = "Banish",
+				PowerWords = "Exilium",
+				Description = "Sends demons and the dead back to the realms of hell.",
+				ManaCost = 30,
+				TithingCost = 120,
+				MinSkill = 60,
+				TargetType = TargetFlags.Harmful
+			},
+			266,
+			9040
+		);
 
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 3 ); } }
-		public override int RequiredTithing{ get{ return 120; } }
-		public override double RequiredSkill{ get{ return 60.0; } }
-		public override int RequiredMana{ get{ return 30; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
+		public override int RequiredMana{ get{ return SpellInfo.SpellDefinition.ManaCost; } }
 
-        public BanishEvilSpell(Mobile caster, Item scroll) : base(caster, scroll, m_Info)
+        public BanishEvilSpell(Mobile caster, Item scroll) : base(caster, scroll, SpellInfo)
         {
         }
 
