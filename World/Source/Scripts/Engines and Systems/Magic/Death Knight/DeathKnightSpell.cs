@@ -21,27 +21,12 @@ namespace Server.Spells.DeathKnight
 		public static string SpellDescription( int spell )
 		{
 			string txt = "This skull holds the knowledge of Death Knight magic: ";
-			string skl = "0";
+			var definition = DeathKnightSpellProvider.GetDefinition(spell);
+			if ( definition == null ) return txt; // Unknown spell
 
-			if ( spell == 750 ){ 		skl = "40";	txt += "Banish summoned creatures back to their realm, demons back to hell, or elementals back to their plane of existence."; }
-			else if ( spell == 751 ){ 	skl = "15";	txt += "The death knight's target is healed by demonic forces for a significant amount."; }
-			else if ( spell == 752 ){ 	skl = "90";	txt += "Summons the devil to battle with the death knight."; }
-			else if ( spell == 753 ){ 	skl = "30";	txt += "The next target hit becomes marked by the grim reaper. All damage dealt to it is increased, but the death knight takes extra damage from other kinds of creatures."; }
-			else if ( spell == 754 ){ 	skl = "5";	txt += "Your hand holds the powers of a hag, where it can remove curses from items and others."; }
-			else if ( spell == 755 ){ 	skl = "70";	txt += "The death knights's enemy is scorched by a hellfire that continues to burn the enemy for a short duration."; }
-			else if ( spell == 756 ){ 	skl = "25";	txt += "Calls down a bolt of energy from Lucifer himself, and temporarily stuns the enemy."; }
-			else if ( spell == 757 ){ 	skl = "80";	txt += "The forces of Orcus surround the knight and reflects a certain amount of magical effects back at the caster."; }
-			else if ( spell == 758 ){ 	skl = "60";	txt += "Channels hatred to form a barrier around the target, shielding them from physical harm."; }
-			else if ( spell == 759 ){ 	skl = "45";	txt += "Drains the enemy of their soul, reducing their mana for a short period of time."; }
-			else if ( spell == 760 ){ 	skl = "20";	txt += "Greatly increases the target's strength for a short period."; }
-			else if ( spell == 761 ){ 	skl = "10";	txt += "The death knight's enemy is damaged by a demonic energy from the nine hells."; }
-			else if ( spell == 762 ){ 	skl = "35";	txt += "The death knight's target has their skin regenerate health over time."; }
-			else if ( spell == 763 ){ 	skl = "50";	txt += "The death knight unleashes the forces of hell unto his nearby enemies, causing much damage."; }
+			txt += definition.Description;
 
-			if ( skl == "0" )
-				return txt;
-
-			return txt + " It requires a Death Knight to be at least a " + skl + " in Knightship.";
+			return txt + " It requires a Death Knight to be at least a " + definition.MinSkill + " in Knightship.";
 		}
 
 		public override bool CheckCast()

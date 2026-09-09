@@ -1,4 +1,5 @@
 using Server.Gumps;
+using Server.Spells.DeathKnight;
 
 namespace Server.Items
 {
@@ -11,8 +12,8 @@ namespace Server.Items
 		public Mobile Owner { get; set; }
 
 		public override SpellbookType SpellbookType{ get{ return SpellbookType.DeathKnight; } }
-		public override int BookOffset{ get{ return 750; } }
-		public override int BookCount{ get{ return 15; } }
+		public override int BookOffset{ get{ return DeathKnightSpellProvider.FirstSpellId; } }
+		public override int BookCount{ get{ return DeathKnightSpellProvider.SpellCount; } }
 
 		[Constructable]
 		public DeathKnightSpellbook() : this( 0, null )

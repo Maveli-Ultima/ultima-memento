@@ -1,26 +1,34 @@
 using System;
 using System.Collections;
 using Server.Targeting;
-using Server.Network;
-using Server.Mobiles;
-using Server.Items;
 
 namespace Server.Spells.DeathKnight
 {
 	public class HellfireSpell : DeathKnightSpell
 	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Demonic Hellfire", "Flam Infernum",
-				242,
-				9012
-			);
+		public static readonly SpellInfo SpellInfo = new SpellInfo(
+			new SpellDefinition
+			{
+				SpellID = 755,
+				IconGraphic = 0x3E9,
+				Name = "Demonic Hellfire",
+				PowerWords = "Flam Infernum",
+				Description = "The death knight's enemy is scorched by a hellfire that continues to burn the enemy for a short duration.",
+				ManaCost = 52,
+				TithingCost = 84,
+				MinSkill = 70,
+				TargetType = TargetFlags.Harmful
+			},
+			242,
+			9012
+		);
 
 		public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds( 1 ); } }
-		public override int RequiredTithing{ get{ return 84; } }
-		public override double RequiredSkill{ get{ return 70.0; } }
-		public override int RequiredMana{ get{ return 52; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
+		public override int RequiredMana{ get{ return SpellInfo.SpellDefinition.ManaCost; } }
 
-		public HellfireSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		public HellfireSpell( Mobile caster, Item scroll ) : base( caster, scroll, SpellInfo )
 		{
 		}
 

@@ -2,25 +2,35 @@ using System;
 using System.Collections;
 using Server.Targeting;
 using Server.Network;
-using Server.Mobiles;
 
 namespace Server.Spells.DeathKnight
 {
 	public class SuccubusSkinSpell : DeathKnightSpell
 	{
-		private static SpellInfo m_Info = new SpellInfo(
-				"Succubus Skin", "Erinyes Carnem",
-				236,
-				9011
-			);
+		public static readonly SpellInfo SpellInfo = new SpellInfo(
+			new SpellDefinition
+			{
+				SpellID = 762,
+				IconGraphic = 0x500C,
+				Name = "Succubus Skin",
+				PowerWords = "Erinyes Carnem",
+				Description = "The death knight's target has their skin regenerate health over time.",
+				ManaCost = 32,
+				TithingCost = 49,
+				MinSkill = 35,
+				TargetType = TargetFlags.Beneficial
+			},
+			236,
+			9011
+		);
 
 		private static Hashtable m_Table = new Hashtable();
         public override TimeSpan CastDelayBase { get { return TimeSpan.FromSeconds(3); } }
-		public override int RequiredTithing{ get{ return 49; } }
-        public override int RequiredMana { get { return 32; } }
-		public override double RequiredSkill{ get{ return 35.0; } }
+		public override int RequiredTithing{ get{ return SpellInfo.SpellDefinition.TithingCost; } }
+        public override int RequiredMana { get { return SpellInfo.SpellDefinition.ManaCost; } }
+		public override double RequiredSkill{ get{ return SpellInfo.SpellDefinition.MinSkill; } }
 
-		public SuccubusSkinSpell( Mobile caster, Item scroll ) : base( caster, scroll, m_Info )
+		public SuccubusSkinSpell( Mobile caster, Item scroll ) : base( caster, scroll, SpellInfo )
 		{
 		}
 

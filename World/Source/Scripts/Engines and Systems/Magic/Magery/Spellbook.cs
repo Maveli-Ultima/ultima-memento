@@ -9,6 +9,7 @@ using Server.Spells.Elementalism;
 using System.Globalization;
 using Server.Spells.HolyMan;
 using Server.Spells.Song;
+using Server.Spells.DeathKnight;
 
 namespace Server.Items
 {
@@ -254,7 +255,7 @@ namespace Server.Items
 				return SpellbookType.Elementalism;
 			else if ( spellID >= BardSongProvider.FirstSpellId && spellID < BardSongProvider.LastSpellId )
 				return SpellbookType.Song;
-			else if ( spellID >= 750 && spellID < 764 )
+			else if ( spellID >= DeathKnightSpellProvider.FirstSpellId && spellID <= DeathKnightSpellProvider.LastSpellId )
 				return SpellbookType.DeathKnight;
 			else if ( spellID >= HolyManSpellProvider.FirstSpellId && spellID <= HolyManSpellProvider.LastSpellId)
 				return SpellbookType.HolyMan;
@@ -436,6 +437,11 @@ namespace Server.Items
 		{
 			switch ( type )
 			{
+				case SpellbookType.DeathKnight:
+					if (book is DeathKnightSpellbook && ((DeathKnightSpellbook)book).Owner != from)
+						return false;
+					break;
+
 				case SpellbookType.HolyMan:
 					if (book is HolyManSpellbook && ((HolyManSpellbook)book).owner != from)
 						return false;
@@ -448,7 +454,6 @@ namespace Server.Items
 				case SpellbookType.Samurai:
 				case SpellbookType.Elementalism:
 				case SpellbookType.Song:
-				case SpellbookType.DeathKnight:
 				case SpellbookType.Mystic:
 				case SpellbookType.Syth:
 				case SpellbookType.Jedi:
