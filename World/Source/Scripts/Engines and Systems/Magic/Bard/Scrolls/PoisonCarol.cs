@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class PoisonCarolScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 363 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public PoisonCarolScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public PoisonCarolScroll( int amount ) : base( 363, 0x1F33, amount )
+		public PoisonCarolScroll( int amount ) : base( PoisonCarolSong.SpellInfo.SpellDefinition.SpellID, 0x1F33, amount )
 		{
-			Name = "poison carol sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

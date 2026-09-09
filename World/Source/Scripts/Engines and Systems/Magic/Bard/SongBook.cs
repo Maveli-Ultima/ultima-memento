@@ -1,4 +1,5 @@
 using Server.Gumps;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
@@ -8,8 +9,8 @@ namespace Server.Items
 		public override string DefaultDescription{ get{ return "This book is used by bards to write the mystical songs they find. The songs within the book can be used to produce varying magical effects. These songs require the use of a musical instrument. Dropping such scrolls onto this book will place the song within its pages. Some books have enhanced properties, that are only effective when the book is held."; } }
 
 		public override SpellbookType SpellbookType{ get{ return SpellbookType.Song; } }
-		public override int BookOffset{ get{ return 351; } }
-		public override int BookCount{ get{ return 16; } }
+		public override int BookOffset{ get{ return BardSongProvider.FirstSpellId; } }
+		public override int BookCount{ get{ return BardSongProvider.SpellCount; } }
 
 		[Constructable]
 		public SongBook() : this( (ulong)0 )
@@ -35,29 +36,12 @@ namespace Server.Items
 		public static string SpellDescription( int spell )
 		{
 			string txt = "This is a bardic song: ";
-			string skl = "0";
+			var definition = BardSongProvider.GetDefinition(spell);
+			if ( definition == null ) return txt; // Unknown spell
 
-			if ( spell == 351 ){ 	skl = "55";	txt = "An area of effect that regenerates your party's health slowly."; }
-			else if ( spell == 352 ){ 	skl = "60";	txt = "An area of effect that raises the intelligence of your party."; }
-			else if ( spell == 353 ){ 	skl = "50";	txt = "An area of effect that raises the energy resistance of your party."; }
-			else if ( spell == 354 ){ 	skl = "70";	txt = "Lowers the energy resistance of your target."; }
-			else if ( spell == 355 ){ 	skl = "50";	txt = "An area of effect that raises the fire resistance of your party."; }
-			else if ( spell == 356 ){ 	skl = "70";	txt = "Lowers the fire resistance of your target."; }
-			else if ( spell == 357 ){ 	skl = "50";	txt = "Damages your target with a burst of sonic energy."; }
-			else if ( spell == 358 ){ 	skl = "50";	txt = "An area of effect that raises the cold resistance of your party."; }
-			else if ( spell == 359 ){ 	skl = "70";	txt = "Lowers the ice resistance of your target."; }
-			else if ( spell == 360 ){ 	skl = "50";	txt = "An area of effect that raises the physical resist of your party."; }
-			else if ( spell == 361 ){ 	skl = "55";	txt = "An area of effect that regenerates your party's mana slowly."; }
-			else if ( spell == 362 ){ 	skl = "90";	txt = "An area of effect that dispels all summoned creatures around you."; }
-			else if ( spell == 363 ){ 	skl = "50";	txt = "An area of effect that raises the poison resistance of your party."; }
-			else if ( spell == 364 ){ 	skl = "70";	txt = "Lowers the poison resistance of your target."; }
-			else if ( spell == 365 ){ 	skl = "60";	txt = "An area of effect that raises the dexterity of your party."; }
-			else if ( spell == 366 ){ 	skl = "60";	txt = "An area of effect that raises the strength of your party."; }
+			txt += definition.Description;
 
-			if ( skl == "0" )
-				return txt;
-
-			return txt + " It requires at least a " + skl + " in Musicianship to perform.";
+			return txt + " It requires at least a " + definition.MinSkill + " in Musicianship to perform.";
 		}
 
 		public SongBook( Serial serial ) : base( serial )

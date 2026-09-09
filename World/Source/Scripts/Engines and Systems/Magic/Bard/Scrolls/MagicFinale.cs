@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class MagicFinaleScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 362 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public MagicFinaleScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public MagicFinaleScroll( int amount ) : base( 362, 0x1F2E, amount )
+		public MagicFinaleScroll( int amount ) : base( MagicFinaleSong.SpellInfo.SpellDefinition.SpellID, 0x1F2E, amount )
 		{
-			Name = "magic finale sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class MagesBalladScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 361 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public MagesBalladScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public MagesBalladScroll( int amount ) : base( 361, 0x1F30, amount )
+		public MagesBalladScroll( int amount ) : base( MagesBalladSong.SpellInfo.SpellDefinition.SpellID, 0x1F30, amount )
 		{
-			Name = "mage's ballad sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

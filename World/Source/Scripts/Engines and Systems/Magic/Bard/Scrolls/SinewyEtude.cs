@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class SinewyEtudeScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 366 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public SinewyEtudeScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public SinewyEtudeScroll( int amount ) : base( 366, 0x1F4B, amount )
+		public SinewyEtudeScroll( int amount ) : base( SinewyEtudeSong.SpellInfo.SpellDefinition.SpellID, 0x1F4B, amount )
 		{
-			Name = "sinewy etude sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

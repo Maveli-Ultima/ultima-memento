@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class SheepfoeMamboScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 365 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public SheepfoeMamboScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public SheepfoeMamboScroll( int amount ) : base( 365, 0x1F2D, amount )
+		public SheepfoeMamboScroll( int amount ) : base( SheepfoeMamboSong.SpellInfo.SpellDefinition.SpellID, 0x1F2D, amount )
 		{
-			Name = "shepherd's dance sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

@@ -1,12 +1,10 @@
-using System;
-using Server;
-using Server.Items;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
 	public class EnchantingEtudeScroll : SpellScroll
 	{
-		public override string DefaultDescription{ get{ return SongBook.SpellDescription( 352 ); } }
+		public override string DefaultDescription{ get{ return SongBook.SpellDescription( SpellID ); } }
 
 		[Constructable]
 		public EnchantingEtudeScroll() : this( 1 )
@@ -14,9 +12,9 @@ namespace Server.Items
 		}
 
 		[Constructable]
-		public EnchantingEtudeScroll( int amount ) : base( 352, 0x1F4A, amount )
+		public EnchantingEtudeScroll( int amount ) : base( EnchantingEtudeSong.SpellInfo.SpellDefinition.SpellID, 0x1F4A, amount )
 		{
-			Name = "enchanting etude sheet music";
+			Name = string.Format("{0} sheet music", BardSongProvider.GetDefinition(SpellID).Name);
 			Hue = 0x96;
 			Stackable = true;
         }

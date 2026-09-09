@@ -8,6 +8,7 @@ using Server.Targeting;
 using Server.Spells.Elementalism;
 using System.Globalization;
 using Server.Spells.HolyMan;
+using Server.Spells.Song;
 
 namespace Server.Items
 {
@@ -251,7 +252,7 @@ namespace Server.Items
 				return SpellbookType.Ninja;
 			else if ( spellID >= 300 && spellID < 332 )
 				return SpellbookType.Elementalism;
-			else if ( spellID >= 351 && spellID < 367 )
+			else if ( spellID >= BardSongProvider.FirstSpellId && spellID < BardSongProvider.LastSpellId )
 				return SpellbookType.Song;
 			else if ( spellID >= 750 && spellID < 764 )
 				return SpellbookType.DeathKnight;
