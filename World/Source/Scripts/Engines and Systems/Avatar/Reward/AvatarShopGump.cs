@@ -464,6 +464,7 @@ namespace Server.Engines.Avatar
 
 							m_Context.PointsSaved -= cost;
 							player.AddToBackpack(item);
+							CombatBar.Refresh(player);
 						}
 					}
 					else
@@ -490,6 +491,7 @@ namespace Server.Engines.Avatar
 								m_Context.PointsSaved -= cost;
 								actionReward.OnSelect();
 								AvatarEngine.Instance.ApplyContext(player, player.Avatar);
+								CombatBar.Refresh(player);
 							}
 						}
 					}
