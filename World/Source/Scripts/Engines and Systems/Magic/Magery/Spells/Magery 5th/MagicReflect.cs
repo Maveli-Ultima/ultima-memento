@@ -34,7 +34,7 @@ namespace Server.Spells.Fifth
 
 		public static void AddReflect( Mobile m )
 		{
-			m_Registry.Add( m, true );
+			m_Registry[m] = true;
 		}
 
 		public static void RemoveReflect( Mobile m )
